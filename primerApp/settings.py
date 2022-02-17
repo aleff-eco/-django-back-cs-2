@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'register',   
     'login',
     'primerApp',
+    'primerComponente',
 ]
 
 REST_FRAMEWORK = {
