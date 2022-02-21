@@ -23,4 +23,5 @@ urlpatterns = [
     re_path(r'^api/v1/register/', include('register.urls')),
     re_path(r'^api/v1/login/',include('login.urls')),
     re_path(r'^api/v1/primer_componente/', include('primerComponente.urls')),
+    re_path(r'^api/v1/loadImage/', include('loadimage.urls')),
 ]

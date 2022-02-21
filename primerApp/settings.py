@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,8 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c-m%9d#l%a^b+q82z&kd^xo47rmx+#qo%tr&1$-@f1lf4*x^6p'
+# SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,12 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 
     #Importacion de los componentes.
     'register',   
     'login',
     'primerApp',
     'primerComponente',
+    'loadimage',
 ]
 
 REST_FRAMEWORK = {
@@ -62,6 +66,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+#Agregado para actividad
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'primerApp.urls'
@@ -84,22 +94,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'primerApp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',  
-        'NAME': 'Django',
-        'USER': 'postgres',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT':  '5433',
-    }
-}
-
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': env('ENGINE'), # Es una constante que nunca cambia, es por defecto nombre ruta de la librería
+#         'NAME': env('NAME'),
+#         'USER':env('USER'),
+#         'PASSWORD':env('PASSWORD'),
+#         'HOST':env('HOST'),
+#         'PORT':env('PORT')
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -138,7 +144,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+#Ruta para acceder a los archivos
+MEDIA_URL = '/assets/'
+
+#Carptea dónde se guardarán los archivos
+MEDIA_ROOT = os.path.join(BASE_DIR, 'assets')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+try:
+    from primerApp.local_settings import *
+except ImportError :
+    pass
